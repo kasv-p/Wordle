@@ -16,8 +16,8 @@ var guesslist = ["aahed", "aalii", "aargh", "aarti", "abaca", "abaci", "abacs", 
 guesslist=guesslist.concat(wordlist);
 
 var word = wordlist[Math.floor(Math.random() * wordlist.length)].toUpperCase();
-word='sixty';
-word=word.toUpperCase();
+// word='sixty';
+// word=word.toUpperCase();
 console.log(word);
 window.onload= function ()
 {
