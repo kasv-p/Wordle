@@ -16,6 +16,8 @@ var guesslist = ["aahed", "aalii", "aargh", "aarti", "abaca", "abaci", "abacs", 
 guesslist=guesslist.concat(wordlist);
 
 var word = wordlist[Math.floor(Math.random() * wordlist.length)].toUpperCase();
+word='cheap';
+word=word.toUpperCase();
 console.log(word);
 window.onload= function ()
 {
@@ -100,7 +102,7 @@ function processKey()
 }
 function processInput(e)
 {
-  if (finish) return;//if game finished user should not press anything
+  if (finish) return; // if game finished user should not press anything
   if ('KeyA'<=e.code && e.code<='KeyZ')
   {
     if(c<w)
@@ -134,7 +136,6 @@ function processInput(e)
 }
 function update()
 {
-
   choice='';
   for(var x=0;x<c;x++)
   {
@@ -157,33 +158,12 @@ function update()
     invalid.classList.remove('invalid');
   }
   var numofcorrect=0;
-  var hashmapofword={};
   var hashmapofans={};
-  var check={};
-  choice=choice.toUpperCase();
-  for (var x=65;x<=90;x++)
-  {
-    check[String.fromCharCode(x)]=0;
-    hashmapofans[String.fromCharCode(x)]=0;
-    hashmapofword[String.fromCharCode(x)]=0;
-  }
-  for (var x=0;x<choice.length;x++)
-  {
-    letter=choice[x];
-    if (hashmapofword[letter]>0)
-    {
-      hashmapofword[letter]+=1;
-    }
-    else
-    {
-      hashmapofword[letter]=1;
-    }
-  }
   ans=word.toUpperCase();
   for (var x=0;x<ans.length;x++)
   {
     letter=ans[x];
-    if (hashmapofans[letter]>0)
+    if (hashmapofans[letter])
     {
       hashmapofans[letter]+=1;
     }
@@ -192,24 +172,16 @@ function update()
       hashmapofans[letter]=1;
     }
   }
-  var partialmap=hashmapofword;
   for(c=0;c<w;c++)
   {
     let now=document.getElementById(r.toString()+'-'+c.toString());
     var letter=now.innerText;
     if (word[c]==letter)
     {
-      if (now.classList.contains('present'))
-      {
-        now.classList.remove('present');
-        now.classList.add('correct');
-      }
-      else
-      {
-        now.classList.add('correct');
-      }
+
+      now.classList.add('correct');
       numofcorrect+=1;
-      hashmapofword[letter]-=1;
+      hashmapofans[letter]-=1;
       let keyTile=document.getElementById('Key'+letter);
       if (keyTile.classList.contains('present'))
       {
@@ -220,31 +192,25 @@ function update()
       {
         keyTile.classList.add('correct');
       }
-      if (check[letter]>0)
-      {
-        check[letter]+=1;
-      }
-      else
-      {
-        check[letter]=1;
-      }
     }
-    else if (word.includes(letter) && hashmapofword[letter]>0 && partialmap[letter]>0 && check[letter]<hashmapofans[letter])
+    if (numofcorrect==w)
+    {
+    finish=true;
+    }
+  }
+  for (c=0;c<w;c++)
+  {
+    let now=document.getElementById(r.toString()+'-'+c.toString());
+    var letter=now.innerText;
+    if (!now.classList.contains('correct'))
+    {
+    if (word.includes(letter) && hashmapofans[letter]>0)
     {
         now.classList.add('present');
-        partialmap[letter]-=1;
         let keyTile=document.getElementById('Key'+letter);
         if (!keyTile.classList.contains('correct'))
         {
           keyTile.classList.add('present');
-        }
-        if (check[letter]>0)
-        {
-          check[letter]+=1;
-        }
-        else
-        {
-          check[letter]=1;
         }
     }
     else
@@ -256,11 +222,8 @@ function update()
          keyTile.classList.add('absent');
       }
     }
-    if (numofcorrect==w)
-    {
-    finish=true;
-    }
   }
+}
   r+=1;
   c=0;
 }
