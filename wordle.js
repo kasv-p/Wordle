@@ -16,8 +16,6 @@ var guesslist = ["aahed", "aalii", "aargh", "aarti", "abaca", "abaci", "abacs", 
 guesslist=guesslist.concat(wordlist);
 
 var word = wordlist[Math.floor(Math.random() * wordlist.length)].toUpperCase();
-// word='sixty';
-// word=word.toUpperCase();
 console.log(word);
 window.onload= function ()
 {
@@ -178,7 +176,6 @@ function update()
     var letter=now.innerText;
     if (word[c]==letter)
     {
-
       now.classList.add('correct');
       numofcorrect+=1;
       hashmapofans[letter]-=1;
@@ -208,10 +205,7 @@ function update()
     {
         now.classList.add('present');
         let keyTile=document.getElementById('Key'+letter);
-        if (!keyTile.classList.contains('correct'))
-        {
-          keyTile.classList.add('present');
-        }
+        keyTile.classList.add('present');
         hashmapofans[letter]-=1;
     }
     else
